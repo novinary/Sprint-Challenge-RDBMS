@@ -1,30 +1,30 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const Project = require('./project-model')
+const Project = require("./project-model");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const project = await Project.find();
     res.status(200).json(project);
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'We ran into an error retrieving the projects' });
+      .json({ message: "We ran into an error retrieving the projects" });
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (project) {
       res.status(200).json(project);
     } else {
-      res.status(404).json({ message: 'We could not find the project' });
+      res.status(404).json({ message: "We could not find the project" });
     }
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'We ran into an error retrieving the project' });
+      .json({ message: "We ran into an error retrieving the project" });
   }
 });
 
@@ -37,7 +37,26 @@ router.get("/:id/actions", async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/actions", async (req, res) => {
+  const action = req.body;
+
+  if (action.description) {
+    try {
+      const inserted = await db("action").add(action);
+      res.status(201).json(inserted);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "We ran into an error creating the action" });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: "Please provide description of the action" });
+  }
+});
+
+router.post("/", async (req, res) => {
   const project = req.body;
 
   if (project.name) {
@@ -47,12 +66,11 @@ router.post('/', async (req, res) => {
     } catch (error) {
       res
         .status(500)
-        .json({ message: 'We ran into an error creating the project' });
+        .json({ message: "We ran into an error creating the project" });
     }
   } else {
-    res.status(400).json({ message: 'Please provide name of the project' });
+    res.status(400).json({ message: "Please provide name of the project" });
   }
 });
-
 
 module.exports = router;
