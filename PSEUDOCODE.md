@@ -14,6 +14,15 @@ run knex migrate:latest to run the migration scripts - done
 
 ## Step 3
 Build the API with the following endpoints:
- POST for adding projects. - Done
- POST for adding actions. - To do
- GET for retrieving a project by its id that returns an object with action - Done
+ POST for adding projects. - done
+ POST for adding actions. - done
+ GET for retrieving a project by its id that returns an object with action - done
+
+
+## Step 4 - Stretch
+Use knex to add data seeding scripts for projects and actions.
+npx knex seed:make 000-cleanup    - done 
+yarn add knex-cleaner --dev       - done
+npx knex seed:make 001-project    - done
+npx knex seed:make 002-action     - done
+npx knex seed:run to run the seed scripts   - done
