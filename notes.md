@@ -16,7 +16,6 @@
 - identify the attributes
 - identify relationships 
 
-
 ## Relationships
 - one to one > one to zero or one
 - one to money: most common type

@@ -3,9 +3,11 @@ const router = require("express").Router();
 const Project = require("./project-model");
 const Action = require("./action-model");
 
+// get all projects
 router.get("/", async (req, res) => {
   try {
     const project = await Project.find();
+
     res.status(200).json(project);
   } catch (error) {
     res
@@ -14,6 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get projects by id
 router.get("/:id", async (req, res) => {
   try {
     const project = await Project.find()
@@ -25,20 +28,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// get a project by its id and return an nested object of actions
 router.get("/:id/actions", async (req, res) => {
   try {
     const project = await Project.find()
-    .where({ id: req.params.id })
-    .first();
+      .where({ id: req.params.id })
+      .first();
 
-    const action = await Action.find()
-    .where({ project_id: req.params.id })
-    
+    const action = await Action.find().where({ project_id: req.params.id });
+
     const fullProject = {
       id: project.id,
       name: project.name,
       description: project.description,
-      completed: project.isCompleted === 0 ? false : true,
+      completed: project.isCompleted === 0 ? false : true, // the database will return 1 for true and 0 for false
       action: action.map(i => {
         return {
           id: i.id,
@@ -54,6 +57,7 @@ router.get("/:id/actions", async (req, res) => {
   }
 });
 
+// post a new project
 router.post("/", async (req, res) => {
   const project = req.body;
 

@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const Action = require("./action-model");
 
+// get all actions
 router.get("/", async (req, res) => {
   try {
     const action = await Action.find();
@@ -13,6 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get actions by id
 router.get("/:id", async (req, res) => {
   try {
     const action = await Action.findById(req.params.id);
@@ -28,6 +30,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// post a new action
 router.post("/", async (req, res) => {
   const action = req.body;
 
@@ -46,6 +49,5 @@ router.post("/", async (req, res) => {
       .json({ message: "Please provide description of the action" });
   }
 });
-
 
 module.exports = router;
