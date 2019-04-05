@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const Project = require("./project-model");
+const Action = require("./action-model");
 
 router.get("/", async (req, res) => {
   try {
@@ -15,44 +16,41 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id);
-    if (project) {
-      res.status(200).json(project);
-    } else {
-      res.status(404).json({ message: "We could not find the project" });
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "We ran into an error retrieving the project" });
-  }
-});
-
-router.get("/:id/actions", async (req, res) => {
-  try {
-    const action = await db("action").where({ project_id: req.params.id });
-    res.status(200).json(action);
+    const project = await Project.find()
+      .where({ id: req.params.id })
+      .first();
+    res.status(200).json(project);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-router.post("/actions", async (req, res) => {
-  const action = req.body;
+router.get("/:id/actions", async (req, res) => {
+  try {
+    const project = await Project.find()
+    .where({ id: req.params.id })
+    .first();
 
-  if (action.description) {
-    try {
-      const inserted = await db("action").add(action);
-      res.status(201).json(inserted);
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: "We ran into an error creating the action" });
-    }
-  } else {
-    res
-      .status(400)
-      .json({ message: "Please provide description of the action" });
+    const action = await Action.find()
+    .where({ project_id: req.params.id })
+    
+    const fullProject = {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      completed: project.isCompleted === 0 ? false : true,
+      action: action.map(i => {
+        return {
+          id: i.id,
+          description: i.description,
+          notes: i.notes,
+          completed: i.isCompleted === 0 ? false : true
+        };
+      })
+    };
+    res.status(200).json(fullProject);
+  } catch (error) {
+    res.status(500).json({ message: "Oops, we ran into an error." });
   }
 });
 

@@ -8,20 +8,17 @@ module.exports = {
 };
 
 function find() {
-  return db('project');
+  return db('action');
 }
 
 function findById(id) {
-  return db('project')
+  return db('action')
     .where({ id })
     .first();
 }
 
-function add(project) {
+function add(action) {
   // passing 'id' as the second aparameter is recommended to ensure the id is returned
   // when connecting to other database management systems like Postgres
-  return db('project').insert(project, 'id');
+  return db('action').insert(action, 'id');
 }
-
-
-
