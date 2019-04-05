@@ -7,7 +7,8 @@ exports.up = function (knex, Promise) {
 
         table.text('notes');
 
-        table.boolean('isCompleted');
+        table.boolean('isCompleted').defaultTo(false)
+        ;
 
         table
             .integer('project_id')

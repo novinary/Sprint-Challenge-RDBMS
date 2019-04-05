@@ -1,12 +1,4 @@
-const express = require('express');
-const knex = require('knex');
-const knexConfig = require('./knexfile').development;
+const server = require('./api/server.js');
 
-const db = knex(knexConfig);
-
-const server = express();
-
-server.use(express.json());
-
-const port = process.env.PORT || 4400;
+const port = process.env.PORT || 4100;
 server.listen(port, () => console.log(`\n === Running on ${port} === \n`));

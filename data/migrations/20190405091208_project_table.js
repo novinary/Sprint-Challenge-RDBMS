@@ -7,7 +7,8 @@ exports.up = function(knex, Promise) {
 
 		table.string('description', 250).notNullable();
 
-		table.boolean('isCompleted');
+		table.boolean('isCompleted').defaultTo(false)
+		;
 	});
 };
 
